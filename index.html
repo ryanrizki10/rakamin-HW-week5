@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+    <title>Halaman Registrasi dan Pendaftaran</title>
+    <style>
+        body {
+            background-color: #ddd;
+        }
+
+        label {
+            font-weight: bold;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container mt-5">
+        <ul class="nav nav-tabs" id="myTabs">
+            <li class="nav-item">
+                <a class="nav-link active" id="registrasi-tab" data-toggle="tab" href="#registrasi" style="background-color: rgb(8, 8, 73); color: white;">Registrasi</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" id="listPendaftar-tab" data-toggle="tab" href="#listPendaftar" style="background-color: rgb(8, 8, 73); color: white; margin-left: 10px;">List Pendaftar</a>
+            </li>
+        </ul>
+
+        <div class="tab-content mt-4">
+            <div class="tab-pane fade show active" id="registrasi">
+                <form id="registrationForm" onsubmit="return validateForm()">
+                    <div class="form-group">
+                        <label for="nama">Nama:</label>
+                        <input type="text" class="form-control" id="nama" name="nama" minlength="10" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="umur">Umur:</label>
+                        <input type="number" class="form-control" id="umur" name="umur" min="25" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="uangsangu">Uang Saku:</label>
+                        <input type="number" class="form-control" id="uangsangu" name="uangsangu" min="100000"
+                            max="1000000" required>
+                    </div>
+
+                    <button type="submit" class="btn btn-primary" style="background-color: rgb(8, 8, 73);">Submit</button>
+                </form>
+            </div>
+
+            <div class="tab-pane fade" id="listPendaftar">
+                <table class="table mt-3">
+                    <thead>
+                        <tr>
+                            <th>Nama</th>
+                            <th>Umur</th>
+                            <th>Uang Saku</th>
+                        </tr>
+                    </thead>
+                    <tbody id="pendaftarTableBody"></tbody>
+                </table>
+                <div id="resume"></div>
+            </div>
+        </div>
+    </div>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 320"><path fill="#ffffff" fill-opacity="1" d="M0,160L48,176C96,192,192,224,288,197.3C384,171,480,85,576,69.3C672,53,768,107,864,138.7C960,171,1056,181,1152,154.7C1248,128,1344,64,1392,32L1440,0L1440,320L1392,320C1344,320,1248,320,1152,320C1056,320,960,320,864,320C768,320,672,320,576,320C480,320,384,320,288,320C192,320,96,320,48,320L0,320Z"></path></svg>
+
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+
+    <script>
+        function validateForm() {
+            var nama = document.getElementById('nama').value;
+            var umur = document.getElementById('umur').value;
+            var uangsangu = document.getElementById('uangsangu').value;
+
+            if (nama.length < 10 || umur < 25 || uangsangu < 100000 || uangsangu > 1000000) {
+                alert('Data tidak sesuai. Silahkan isi form sesuai dengan ketentuan');
+                return false;
+            }
+            addDataToTable();
+            document.getElementById('registrationForm').reset();
+            showResume();
+            return false;
+        }
+
+        function addDataToTable() {
+            let nama = document.getElementById('nama').value;
+            let umur = document.getElementById('umur').value;
+            let uangsangu = document.getElementById('uangsangu').value;
+
+            let table = document.getElementById('pendaftarTableBody');
+            let row = table.insertRow();
+            let cell1 = row.insertCell(0);
+            let cell2 = row.insertCell(1);
+            let cell3 = row.insertCell(2);
+            let cell4 = row.insertCell(3);
+
+            cell1.innerHTML = nama;
+            cell2.innerHTML = umur;
+            cell3.innerHTML = uangsangu;
+            cell4.innerHTML = '';
+        }
+
+        function showResume() {
+            let table = document.getElementById('pendaftarTableBody');
+            let totalUmur = 0;
+            let totalUangSangu = 0;
+
+            for (let i = 0; i < table.rows.length; i++) {
+                totalUmur += parseInt(table.rows[i].cells[1].innerHTML);
+                totalUangSangu += parseInt(table.rows[i].cells[2].innerHTML);
+            }
+
+            let rataRataUmur = totalUmur / table.rows.length;
+            let rataRataUangSangu = totalUangSangu / table.rows.length;
+
+            let resumeDiv = document.getElementById('resume');
+            resumeDiv.innerHTML = '<p>Rata-rata pendaftar memiliki uang saku sebesar ' + rataRataUangSangu.toFixed(2) + ' dengan rata-rata umur ' + rataRataUmur.toFixed(2) + ' tahun.</p>';
+        }
+    </script>
+
+</body>
+
+</html>
